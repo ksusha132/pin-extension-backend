@@ -1,9 +1,6 @@
 package com.pinext.backend.pinextensionbackend.service;
 
-import com.pinext.backend.pinextensionbackend.entity.Person;
-import com.pinext.backend.pinextensionbackend.entity.Subscription;
 import com.pinext.backend.pinextensionbackend.exception.SubscriptionException;
-import com.pinext.backend.pinextensionbackend.exception.UserNotFoundException;
 import com.pinext.backend.pinextensionbackend.repository.PersonRepository;
 import com.pinext.backend.pinextensionbackend.request.CheckUserSubscriptionRequest;
 import com.pinext.backend.pinextensionbackend.request.SubscriptionCallbackRequest;
@@ -12,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -29,10 +27,9 @@ public class UserServiceImpl implements UserService {
         log.info("Subscription request came for: {}, at: {}, subscription type is: {}",
                 request.getEmail(), LocalDateTime.now(), request.getSubscriptionType());
 
-        Boolean subscription = personRepository.findByEmail(request.getEmail())
-                .map(person -> getSubscriptionStatus(request, person))
-                .orElseThrow(() -> new UserNotFoundException("Cannot find user by provided email: "
-                        + request.getEmail()));
+        Boolean subscription = Optional.ofNullable(personRepository.findByEmailAndType(request.getEmail(),
+                request.getSubscriptionType()))
+                .orElseThrow(() -> new SubscriptionException("Cannot get status of the subscription."));
 
         log.info("Subscription response with status: {}, time: {}, for email: {}",
                 subscription, LocalDateTime.now(), request.getEmail());
@@ -46,15 +43,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean processCallback(SubscriptionCallbackRequest request) {
         return null;
-    }
-
-    private Boolean getSubscriptionStatus(CheckUserSubscriptionRequest request, Person person) {
-        return person.getSubscriptions()
-                .stream()
-                .filter(subs -> subs.getType().equalsIgnoreCase(request.getSubscriptionType()))
-                .map(Subscription::getActive)
-                .findFirst()
-                .orElseThrow(() -> new SubscriptionException("Cannot get subscription status"
-                        + request.getEmail()));
     }
 }
