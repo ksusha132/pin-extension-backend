@@ -23,6 +23,13 @@ spring:
   security:
     enabled: false
 
+application:
+  swagger:
+    enabled: true
+    title: Backend app of chome extensions
+    description: API
+    version: 1.0.1
+
 management:
   endpoint:
     health:

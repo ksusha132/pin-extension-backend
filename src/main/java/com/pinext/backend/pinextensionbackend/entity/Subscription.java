@@ -3,6 +3,7 @@ package com.pinext.backend.pinextensionbackend.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 /**
  * Участники
@@ -29,6 +30,18 @@ public class Subscription {
      */
     @Column(name = "active")
     Boolean active;
+
+    /**
+     * date from
+     */
+    @Column(name = "sfrom")
+    LocalDate from;
+
+    /**
+     * date to
+     */
+    @Column(name = "sto")
+    LocalDate to;
 
     @ManyToOne
     @JoinColumn(name = "person", nullable = false)
