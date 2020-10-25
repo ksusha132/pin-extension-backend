@@ -1,0 +1,44 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /downloader
+
+spring:
+  application:
+    name: extDownloader
+    profiles:
+      active: local
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+    properties:
+      hibernate:
+        naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        ddl-auto: create
+        temp:
+          use_jdbc_metadata_defaults: false
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    generate-ddl: true
+  security:
+    enabled: false
+
+management:
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      base-path: "/"
+      exposure:
+        include: "*"
+  metrics:
+    export:
+      atlas:
+        enabled: false
+      prometheus:
+        enabled: true
