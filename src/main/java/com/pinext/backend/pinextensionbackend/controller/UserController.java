@@ -2,8 +2,6 @@ package com.pinext.backend.pinextensionbackend.controller;
 
 import com.pinext.backend.pinextensionbackend.request.*;
 import com.pinext.backend.pinextensionbackend.response.CheckSubscriptionResponse;
-import com.pinext.backend.pinextensionbackend.response.CreateAccountResponse;
-import com.pinext.backend.pinextensionbackend.response.OrderResponse;
 import com.pinext.backend.pinextensionbackend.response.SubscriptionResponse;
 import com.pinext.backend.pinextensionbackend.service.UserService;
 import io.swagger.annotations.Api;
@@ -15,14 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Api("API FastSpring operation")
+@Api("API user operation")
 public class UserController {
 
     public static final String BASE_PATH = "/api/v1";
     public static final String CHECK_SUBSCRIPTION = BASE_PATH + "/check-subscription";
     public static final String UNSUBSCRIBE = BASE_PATH + "/unsubscribe";
     public static final String SUBSCRIBE = BASE_PATH + "/subscribe";
-    public static final String CALLBACK = BASE_PATH + "/subscription-callback";
 
     private final UserService userService;
 
@@ -48,10 +45,5 @@ public class UserController {
     @PostMapping(SUBSCRIBE)
     public ResponseEntity<SubscriptionResponse> subscribe(@RequestBody SubscriptionRequest request) {
         return null;
-    }
-
-    @PostMapping(CALLBACK)
-    public ResponseEntity<?> fastSprionCallback(@RequestBody SubscriptionCallbackRequest request) {
-        return ResponseEntity.ok(userService.processCallback(request));
     }
 }
