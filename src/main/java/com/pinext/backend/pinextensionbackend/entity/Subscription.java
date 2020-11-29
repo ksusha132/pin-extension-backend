@@ -16,14 +16,19 @@ public class Subscription {
      * id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    String id;
 
     /**
      * type
      */
     @Column(name = "type")
     String type;
+
+    /**
+     * state
+     */
+    @Column(name = "state")
+    String state;
 
     /**
      * active

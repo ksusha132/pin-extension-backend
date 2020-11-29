@@ -14,8 +14,7 @@ public class Person {
      * id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    String id;
     /**
      * name
      */
