@@ -49,6 +49,18 @@ public class FastSpringServiceImpl implements FastSpringService {
         return "OK";
     }
 
+    private String getProduct(SubscriptionActivatedCallback callback) {
+        return Optional.ofNullable(callback.getProduct())
+                .map(Product::getProduct)
+                .orElseThrow(() -> new SubscriptionException("no product name present"));
+    }
+
+    private Contact getContact(SubscriptionActivatedCallback callback) {
+        return Optional.ofNullable(callback.getAccount())
+                .map(Account::getContact)
+                .orElseThrow(() -> new SubscriptionException("Contact is empty"));
+    }
+
     private void createPerson(SubscriptionActivatedCallback callback) {
         Person newcomer = new Person();
         newcomer.setId(callback.getId());
@@ -67,26 +79,6 @@ public class FastSpringServiceImpl implements FastSpringService {
         subscription.setType(getProduct(callback));
     }
 
-    private String getProduct(SubscriptionActivatedCallback callback) {
-        return Optional.ofNullable(callback.getProduct())
-                .map(Product::getProduct)
-                .orElseThrow(() -> new SubscriptionException("no product name present"));
-    }
-
-    private Contact getContact(SubscriptionActivatedCallback callback) {
-        return Optional.ofNullable(callback.getAccount())
-                .map(Account::getContact)
-                .orElseThrow(() -> new SubscriptionException("Contact is empty"));
-    }
-
-    private LocalDate formatDateFastSpring(String fastSpringDate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FS_DATE_PATTERN);
-        if (fastSpringDate != null) {
-            return LocalDate.parse(fastSpringDate, formatter);
-        }
-        throw new SubscriptionException("No date subscription TO date present");
-    }
-
     private void updatePersonSubscription(Person person, SubscriptionActivatedCallback callback) {
         person.getSubscriptions()
                 .stream()
@@ -102,5 +94,13 @@ public class FastSpringServiceImpl implements FastSpringService {
         subs.setTo(formatDateFastSpring(callback.getNextChargeDateDisplay()));
         subs.setActive(callback.active);
         return subs;
+    }
+
+    private LocalDate formatDateFastSpring(String fastSpringDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FS_DATE_PATTERN);
+        if (fastSpringDate != null) {
+            return LocalDate.parse(fastSpringDate, formatter);
+        }
+        throw new SubscriptionException("No date subscription TO date present");
     }
 }
