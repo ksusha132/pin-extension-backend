@@ -4,6 +4,7 @@ import com.pinext.backend.pinextensionbackend.entity.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
 
 public interface PersonRepository extends JpaRepository<Person, String> {
     @Query("select s.active " +
@@ -11,4 +12,6 @@ public interface PersonRepository extends JpaRepository<Person, String> {
             "join Subscription s on p.id = s.person.id " +
             "where p.email = :email and s.type = :type")
     Boolean findByEmailAndType(String email, String type);
+
+    Optional<Person> findByFastSpringId(String id);
 }

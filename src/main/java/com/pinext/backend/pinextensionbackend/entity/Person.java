@@ -14,7 +14,12 @@ public class Person {
      * id
      */
     @Id
-    String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+    /**
+     * fastSpringId
+     */
+    String fastSpringId;
     /**
      * name
      */

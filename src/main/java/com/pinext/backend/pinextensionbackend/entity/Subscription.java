@@ -16,7 +16,8 @@ public class Subscription {
      * id
      */
     @Id
-    String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
     /**
      * type

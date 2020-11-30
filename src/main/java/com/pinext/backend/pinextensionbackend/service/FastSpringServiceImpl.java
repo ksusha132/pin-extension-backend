@@ -43,7 +43,7 @@ public class FastSpringServiceImpl implements FastSpringService {
                 .map(Account::getId)
                 .orElseThrow(() -> new SubscriptionException("No user id present" + LocalDateTime.now()));
 
-        personRepository.findById(userId)
+        personRepository.findByFastSpringId(userId)
                 .ifPresentOrElse(person -> updateSubscriptionInfo.accept(person, callback),
                         () -> createNewcomer.accept(callback));
         return "OK";
@@ -63,10 +63,11 @@ public class FastSpringServiceImpl implements FastSpringService {
 
     private void createPerson(SubscriptionActivatedCallback callback) {
         Person newcomer = new Person();
-        newcomer.setId(callback.getId());
+        newcomer.setFastSpringId(callback.getAccount().getId());
         Contact contact = getContact(callback);
         newcomer.setEmail(contact.getEmail());
         newcomer.setName(contact.getFirst() + " " + contact.getLast());
+        personRepository.save(newcomer);
         createSubscription(callback, newcomer);
     }
 
@@ -74,9 +75,11 @@ public class FastSpringServiceImpl implements FastSpringService {
         Subscription subscription = new Subscription();
         subscription.setPerson(newcomer);
         subscription.setActive(callback.active);
+        subscription.setState(callback.getState());
         subscription.setFrom(LocalDate.now());
         subscription.setTo(formatDateFastSpring(callback.getNextChargeDateDisplay()));
         subscription.setType(getProduct(callback));
+        subscriptionRepository.save(subscription);
     }
 
     private void updatePersonSubscription(Person person, SubscriptionActivatedCallback callback) {
@@ -93,6 +96,7 @@ public class FastSpringServiceImpl implements FastSpringService {
         subs.setFrom(LocalDate.now());
         subs.setTo(formatDateFastSpring(callback.getNextChargeDateDisplay()));
         subs.setActive(callback.active);
+        subs.setState(callback.getState());
         return subs;
     }
 
