@@ -43,9 +43,13 @@ public class FastSpringServiceImpl implements FastSpringService {
                 .map(Account::getId)
                 .orElseThrow(() -> new SubscriptionException("No user id present" + LocalDateTime.now()));
 
-        personRepository.findByFastSpringId(userId)
-                .ifPresentOrElse(person -> updateSubscriptionInfo.accept(person, callback),
-                        () -> createNewcomer.accept(callback));
+        Optional<Person> oPerson = personRepository.findByFastSpringId(userId);
+        if (oPerson.isPresent()) {
+            updateSubscriptionInfo.accept(oPerson.get(), callback);
+        } else {
+            createNewcomer.accept(callback);
+        }
+
         return "OK";
     }
 
