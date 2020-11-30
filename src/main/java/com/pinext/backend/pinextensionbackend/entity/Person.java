@@ -17,6 +17,10 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     /**
+     * fastSpringId
+     */
+    String fastSpringId;
+    /**
      * name
      */
     @Column(name = "name")

@@ -26,6 +26,12 @@ public class Subscription {
     String type;
 
     /**
+     * state
+     */
+    @Column(name = "state")
+    String state;
+
+    /**
      * active
      */
     @Column(name = "active")

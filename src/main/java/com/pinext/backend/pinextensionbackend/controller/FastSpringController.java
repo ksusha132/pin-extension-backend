@@ -2,6 +2,7 @@ package com.pinext.backend.pinextensionbackend.controller;
 
 import com.pinext.backend.pinextensionbackend.aop.FastSpringApiRequested;
 import com.pinext.backend.pinextensionbackend.callback.*;
+import com.pinext.backend.pinextensionbackend.service.FastSpringService;
 import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,10 +21,16 @@ public class FastSpringController {
     public static final String CALLBACK_SUBS_PAYMENT_OVERDUE = BASE_PATH + "/subscription-payment-overdue";
     public static final String CALLBACK_SUBS_DEACTIVATED = BASE_PATH + "/subscription-deactivated";
 
+    final FastSpringService fastSpringService;
+
+    public FastSpringController(FastSpringService fastSpringService) {
+        this.fastSpringService = fastSpringService;
+    }
+
     @FastSpringApiRequested
     @PostMapping(CALLBACK_SUBS_ACTIVATED)
     public ResponseEntity<?> activateSubscription(@RequestBody SubscriptionActivatedCallback request) {
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(fastSpringService.subscriptionActivated(request));
     }
 
     @FastSpringApiRequested
