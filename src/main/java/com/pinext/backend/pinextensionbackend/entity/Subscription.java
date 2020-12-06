@@ -22,6 +22,12 @@ public class Subscription {
     /**
      * type
      */
+    @Column(name = "subscription_id")
+    String subscriptionId;
+
+    /**
+     * type
+     */
     @Column(name = "type")
     String type;
 
@@ -48,6 +54,12 @@ public class Subscription {
      */
     @Column(name = "sto")
     LocalDate to;
+
+    /**
+     * payment
+     */
+    @Column(name = "payment")
+    String payment;
 
     @ManyToOne
     @JoinColumn(name = "person", nullable = false)

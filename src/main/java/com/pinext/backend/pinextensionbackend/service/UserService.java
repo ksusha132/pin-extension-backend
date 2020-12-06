@@ -6,6 +6,4 @@ import com.pinext.backend.pinextensionbackend.response.CheckSubscriptionResponse
 
 public interface UserService {
     CheckSubscriptionResponse checkSubscription(CheckUserSubscriptionRequest request);
-
-    Boolean processCallback(SubscriptionCallbackRequest request);
 }

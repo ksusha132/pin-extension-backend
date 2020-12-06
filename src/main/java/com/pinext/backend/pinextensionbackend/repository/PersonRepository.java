@@ -7,11 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface PersonRepository extends JpaRepository<Person, String> {
-    @Query("select s.active " +
+    @Query("select s.subscriptionId " +
             "from Person p " +
             "join Subscription s on p.id = s.person.id " +
-            "where p.email = :email and s.type = :type")
-    Boolean findByEmailAndType(String email, String type);
+            "where p.email = :email and s.type = :type and s.state = :state")
+    String findByEmailAndTypeAndState(String email, String type, String state);
 
     Optional<Person> findByFastSpringId(String id);
 }

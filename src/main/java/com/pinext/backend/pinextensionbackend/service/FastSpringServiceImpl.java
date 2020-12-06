@@ -1,6 +1,6 @@
 package com.pinext.backend.pinextensionbackend.service;
 
-import com.pinext.backend.pinextensionbackend.callback.SubscriptionActivatedCallback;
+import com.pinext.backend.pinextensionbackend.callback.*;
 import com.pinext.backend.pinextensionbackend.entity.Person;
 import com.pinext.backend.pinextensionbackend.entity.Subscription;
 import com.pinext.backend.pinextensionbackend.exception.SubscriptionException;
@@ -24,6 +24,10 @@ import java.util.function.Consumer;
 public class FastSpringServiceImpl implements FastSpringService {
 
     public static final String FS_DATE_PATTERN = "d/M/yy";
+    public static final String CHARGE_COMPLETED = "charge-completed";
+    public static final String CHARGE_FAILED = "charge-failed";
+    public static final String DEACTIVATED = "deactivated";
+    public static final String OK = "OK";
 
     PersonRepository personRepository;
     SubscriptionRepository subscriptionRepository;
@@ -34,34 +38,69 @@ public class FastSpringServiceImpl implements FastSpringService {
         this.subscriptionRepository = subscriptionRepository;
     }
 
-    Consumer<SubscriptionActivatedCallback> createNewcomer = this::createPerson;
-    BiConsumer<Person, SubscriptionActivatedCallback> updateSubscriptionInfo = this::updatePersonSubscription;
+    Consumer<SubscriptionCallbackCommon> createNewcomer = this::createPerson;
+    BiConsumer<Person, SubscriptionCallbackCommon> updateSubscriptionInfo = this::updatePersonSubscription;
 
     @Override
     public String subscriptionActivated(SubscriptionActivatedCallback callback) {
-        String userId = Optional.ofNullable(callback.getAccount())
-                .map(Account::getId)
-                .orElseThrow(() -> new SubscriptionException("No user id present" + LocalDateTime.now()));
-
-        personRepository.findByFastSpringId(userId)
-                .ifPresentOrElse(person -> updateSubscriptionInfo.accept(person, callback),
-                        () -> createNewcomer.accept(callback));
-        return "OK";
+        String idUser = getUserIdFromCallback(callback.getAccount());
+        Optional<Person> oPerson = personRepository.findByFastSpringId(idUser);
+        log.info("Subscription activated, user id is: {}, subscription id is: {}",
+                idUser, callback.getSubscription());
+        if (oPerson.isPresent()) {
+            updateSubscriptionInfo.accept(oPerson.get(), callback);
+        } else {
+            createNewcomer.accept(callback);
+        }
+        return OK;
     }
 
-    private String getProduct(SubscriptionActivatedCallback callback) {
+    @Override
+    public String subscriptionDeactivated(SubscriptionDeactivatedCallback callback) {
+        return updatePersonInfo(callback, DEACTIVATED);
+    }
+
+    @Override
+    public String chargeFailed(SubscriptionChargeFailedCallback callback) {
+        return updatePersonInfo(callback, CHARGE_FAILED);
+    }
+
+    @Override
+    public String chargeCompleted(SubscriptionChargeCompletedCallback callback) {
+        return updatePersonInfo(callback, CHARGE_COMPLETED);
+    }
+
+    private String updatePersonInfo(SubscriptionCallbackCommon callback, String type) {
+        String idUser = getUserIdFromCallback(callback.getAccount());
+        Optional<Person> oPerson = personRepository.findByFastSpringId(idUser);
+        log.info("Subscription" + type + ", user id is: {}, subscription id is: {}",
+                idUser, callback.getSubscription());
+        if (!oPerson.isPresent()) {
+            throw new SubscriptionException("No user with this id present : " + idUser);
+        }
+        updateSubscriptionInfo.accept(oPerson.get(), callback);
+        return OK;
+    }
+
+    private String getUserIdFromCallback(Account account) {
+        return Optional.ofNullable(account)
+                .map(Account::getId)
+                .orElseThrow(() -> new SubscriptionException("No user id present" + LocalDateTime.now()));
+    }
+
+    private String getProduct(SubscriptionCallbackCommon callback) {
         return Optional.ofNullable(callback.getProduct())
                 .map(Product::getProduct)
                 .orElseThrow(() -> new SubscriptionException("no product name present"));
     }
 
-    private Contact getContact(SubscriptionActivatedCallback callback) {
+    private Contact getContact(SubscriptionCallbackCommon callback) {
         return Optional.ofNullable(callback.getAccount())
                 .map(Account::getContact)
                 .orElseThrow(() -> new SubscriptionException("Contact is empty"));
     }
 
-    private void createPerson(SubscriptionActivatedCallback callback) {
+    private void createPerson(SubscriptionCallbackCommon callback) {
         Person newcomer = new Person();
         newcomer.setFastSpringId(callback.getAccount().getId());
         Contact contact = getContact(callback);
@@ -71,18 +110,21 @@ public class FastSpringServiceImpl implements FastSpringService {
         createSubscription(callback, newcomer);
     }
 
-    private void createSubscription(SubscriptionActivatedCallback callback, Person newcomer) {
+    private void createSubscription(SubscriptionCallbackCommon callback, Person newcomer) {
         Subscription subscription = new Subscription();
+        subscription.setSubscriptionId(callback.getSubscription());
         subscription.setPerson(newcomer);
+        subscription.setSubscriptionId(callback.getSubscription());
         subscription.setActive(callback.active);
         subscription.setState(callback.getState());
         subscription.setFrom(LocalDate.now());
-        subscription.setTo(formatDateFastSpring(callback.getNextChargeDateDisplay()));
+        subscription.setTo(Optional.ofNullable(formatDateFastSpring(callback.getNextChargeDateDisplay()))
+                .orElse(LocalDate.now()));
         subscription.setType(getProduct(callback));
         subscriptionRepository.save(subscription);
     }
 
-    private void updatePersonSubscription(Person person, SubscriptionActivatedCallback callback) {
+    private void updatePersonSubscription(Person person, SubscriptionCallbackCommon callback) {
         person.getSubscriptions()
                 .stream()
                 .filter(subs -> subs.getType().equalsIgnoreCase(getProduct(callback)))
@@ -92,11 +134,13 @@ public class FastSpringServiceImpl implements FastSpringService {
                 .orElseThrow(() -> new SubscriptionException("Cannot get subscription info"));
     }
 
-    private Subscription updateSubscription(SubscriptionActivatedCallback callback, Subscription subs) {
+    private Subscription updateSubscription(SubscriptionCallbackCommon callback, Subscription subs) {
         subs.setFrom(LocalDate.now());
-        subs.setTo(formatDateFastSpring(callback.getNextChargeDateDisplay()));
+        subs.setTo(Optional.ofNullable(formatDateFastSpring(callback.getNextChargeDateDisplay()))
+                .orElse(LocalDate.now()));
         subs.setActive(callback.active);
         subs.setState(callback.getState());
+        subs.setSubscriptionId(callback.getSubscription());
         return subs;
     }
 
@@ -105,6 +149,6 @@ public class FastSpringServiceImpl implements FastSpringService {
         if (fastSpringDate != null) {
             return LocalDate.parse(fastSpringDate, formatter);
         }
-        throw new SubscriptionException("No date subscription TO date present");
+        return null;
     }
 }
