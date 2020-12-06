@@ -1,10 +1,7 @@
 package com.pinext.backend.pinextensionbackend.service;
 
-import com.pinext.backend.pinextensionbackend.exception.SubscriptionException;
 import com.pinext.backend.pinextensionbackend.repository.PersonRepository;
-import com.pinext.backend.pinextensionbackend.repository.SubscriptionRepository;
 import com.pinext.backend.pinextensionbackend.request.CheckUserSubscriptionRequest;
-import com.pinext.backend.pinextensionbackend.request.SubscriptionCallbackRequest;
 import com.pinext.backend.pinextensionbackend.response.CheckSubscriptionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
