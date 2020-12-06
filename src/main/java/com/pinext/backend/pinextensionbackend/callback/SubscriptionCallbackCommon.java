@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SubscriptionCanceledCallback {
+public class SubscriptionCallbackCommon {
     public String id;
     public String subscription;
     public boolean active;
@@ -42,14 +42,6 @@ public class SubscriptionCanceledCallback {
     public long nextValue;
     public int nextInSeconds;
     public String nextDisplay;
-    public long canceledDate;
-    public long canceledDateValue;
-    public int canceledDateInSeconds;
-    public String canceledDateDisplay;
-    public long deactivationDate;
-    public long deactivationDateValue;
-    public int deactivationDateInSeconds;
-    public String deactivationDateDisplay;
     public int sequence;
     public long begin;
     public long beginValue;
