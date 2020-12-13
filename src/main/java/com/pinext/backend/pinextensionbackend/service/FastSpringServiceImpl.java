@@ -22,8 +22,7 @@ import java.util.function.Consumer;
 @Slf4j
 @Service
 public class FastSpringServiceImpl implements FastSpringService {
-
-    public static final String FS_DATE_PATTERN = "d/M/yy";
+    public static final String FS_DATE_PATTERN = "dd.MM.yyy";
     public static final String CHARGE_COMPLETED = "charge-completed";
     public static final String CHARGE_FAILED = "charge-failed";
     public static final String DEACTIVATED = "deactivated";

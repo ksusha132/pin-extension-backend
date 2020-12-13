@@ -29,12 +29,14 @@ public class FastSpringController {
     // @FastSpringApiRequested
     @PostMapping(CALLBACK_SUBS_ACTIVATED)
     public ResponseEntity<?> activateSubscription(@RequestBody SubscriptionActivatedCallback request) {
+        log.info("Request for subscription Activated {}", request);
         return ResponseEntity.ok(fastSpringService.subscriptionActivated(request));
     }
 
     // @FastSpringApiRequested
     @PostMapping(CALLBACK_SUBS_DEACTIVATED)
     public ResponseEntity<?> subscriptionDeactivated(@RequestBody SubscriptionDeactivatedCallback request) {
+        log.info("Request for subscription Deactivated {}", request);
         return ResponseEntity.ok(fastSpringService.subscriptionDeactivated(request));
     }
 
@@ -42,12 +44,14 @@ public class FastSpringController {
     //@FastSpringApiRequested
     @PostMapping(CALLBACK_SUBS_CHARGE_COMPLETED)
     public ResponseEntity<?> chargeCompleted(@RequestBody SubscriptionChargeCompletedCallback request) {
+        log.info("Request for subscription chargeCompleted {}", request);
         return ResponseEntity.ok(fastSpringService.chargeCompleted(request));
     }
 
     //@FastSpringApiRequested
     @PostMapping(CALLBACK_SUBS_CHARGE_FAILED)
     public ResponseEntity<?> subscriptionChargeFailed(@RequestBody SubscriptionChargeFailedCallback request) {
+        log.info("Request for subscription ChargeFailed {}", request);
         return ResponseEntity.ok(fastSpringService.chargeFailed(request));
     }
 }
