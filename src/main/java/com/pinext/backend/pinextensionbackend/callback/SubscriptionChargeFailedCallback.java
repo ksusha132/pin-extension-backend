@@ -1,10 +1,11 @@
 package com.pinext.backend.pinextensionbackend.callback;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
+import lombok.*;
 
-@Data
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SubscriptionChargeFailedCallback extends SubscriptionCallbackCommon {
     public String reason;
 }

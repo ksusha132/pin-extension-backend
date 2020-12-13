@@ -1,11 +1,12 @@
 package com.pinext.backend.pinextensionbackend.callback;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pinext.backend.pinextensionbackend.fastspring.Order;
-import lombok.Data;
+import lombok.*;
 
-@Data
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SubscriptionChargeCompletedCallback extends SubscriptionCallbackCommon {
     public Order order;
     public int total;

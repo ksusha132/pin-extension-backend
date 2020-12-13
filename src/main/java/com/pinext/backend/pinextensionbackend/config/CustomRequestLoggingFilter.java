@@ -8,7 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CustomRequestLoggingFilter implements WebMvcConfigurer {
 
-    final
     IncomingRequestInterceptor incomingRequestInterceptor;
 
     public CustomRequestLoggingFilter(IncomingRequestInterceptor incomingRequestInterceptor) {
