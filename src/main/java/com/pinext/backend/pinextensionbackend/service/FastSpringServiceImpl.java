@@ -42,6 +42,7 @@ public class FastSpringServiceImpl implements FastSpringService {
 
     @Override
     public String subscriptionActivated(SubscriptionActivatedCallback callback) {
+        log.info("Request for subscription Activated {}", callback.getAccount().getId());
         String idUser = getUserIdFromCallback(callback.getAccount());
         Optional<Person> oPerson = personRepository.findByFastSpringId(idUser);
         log.info("Subscription activated, user id is: {}, subscription id is: {}",
@@ -56,16 +57,19 @@ public class FastSpringServiceImpl implements FastSpringService {
 
     @Override
     public String subscriptionDeactivated(SubscriptionDeactivatedCallback callback) {
+        log.info("Request for subscription Deactivated {}", callback.getAccount().getId());
         return updatePersonInfo(callback, DEACTIVATED);
     }
 
     @Override
     public String chargeFailed(SubscriptionChargeFailedCallback callback) {
+        log.info("Request for subscription ChargeFailed {}", callback.getAccount().getId());
         return updatePersonInfo(callback, CHARGE_FAILED);
     }
 
     @Override
     public String chargeCompleted(SubscriptionChargeCompletedCallback callback) {
+        log.info("Request for subscription chargeCompleted {}", callback);
         return updatePersonInfo(callback, CHARGE_COMPLETED);
     }
 
