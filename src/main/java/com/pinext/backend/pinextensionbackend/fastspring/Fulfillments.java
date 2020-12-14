@@ -1,9 +1,11 @@
 package com.pinext.backend.pinextensionbackend.fastspring;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Fulfillments {
     public Instructions instructions;
     @JsonProperty("example-subscription-monthly_license_0")

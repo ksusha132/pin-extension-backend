@@ -17,6 +17,6 @@ public class CustomRequestLoggingFilter implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(incomingRequestInterceptor)
-                .addPathPatterns("/**/api/v1/**/");
+                .addPathPatterns("/**/api/v1/**");
     }
 }

@@ -1,9 +1,8 @@
 package com.pinext.backend.pinextensionbackend.callback;
 
-import lombok.*;
+import lombok.Data;
 
 
-@Getter
-@Setter
+@Data
 public class SubscriptionDeactivatedCallback extends SubscriptionCallbackCommon {
 }

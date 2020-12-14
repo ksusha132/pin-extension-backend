@@ -1,12 +1,9 @@
 package com.pinext.backend.pinextensionbackend.callback;
 
 import com.pinext.backend.pinextensionbackend.fastspring.Order;
-import lombok.*;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class SubscriptionChargeCompletedCallback extends SubscriptionCallbackCommon {
     public Order order;
     public int total;

@@ -1,11 +1,8 @@
 package com.pinext.backend.pinextensionbackend.callback;
 
-import lombok.*;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class SubscriptionChargeFailedCallback extends SubscriptionCallbackCommon {
     public String reason;
 }
