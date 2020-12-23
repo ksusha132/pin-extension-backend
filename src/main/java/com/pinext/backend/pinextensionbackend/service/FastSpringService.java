@@ -1,16 +1,13 @@
 package com.pinext.backend.pinextensionbackend.service;
 
-import com.pinext.backend.pinextensionbackend.callback.SubscriptionActivatedCallback;
-import com.pinext.backend.pinextensionbackend.callback.SubscriptionChargeCompletedCallback;
-import com.pinext.backend.pinextensionbackend.callback.SubscriptionChargeFailedCallback;
-import com.pinext.backend.pinextensionbackend.callback.SubscriptionDeactivatedCallback;
+import com.pinext.backend.pinextensionbackend.callback.SubscriptionCallbackCommon;
 
 public interface FastSpringService {
-    String subscriptionActivated(SubscriptionActivatedCallback callback);
+    String subscriptionActivated(SubscriptionCallbackCommon callback);
 
-    String subscriptionDeactivated(SubscriptionDeactivatedCallback callback);
+    String subscriptionDeactivated(SubscriptionCallbackCommon callback);
 
-    String chargeFailed(SubscriptionChargeFailedCallback callback);
+    String chargeFailed(SubscriptionCallbackCommon callback);
 
-    String chargeCompleted(SubscriptionChargeCompletedCallback callback);
+    String chargeCompleted(SubscriptionCallbackCommon callback);
 }

@@ -8,7 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CustomRequestLoggingFilter implements WebMvcConfigurer {
 
-    final
     IncomingRequestInterceptor incomingRequestInterceptor;
 
     public CustomRequestLoggingFilter(IncomingRequestInterceptor incomingRequestInterceptor) {
@@ -18,6 +17,6 @@ public class CustomRequestLoggingFilter implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(incomingRequestInterceptor)
-                .addPathPatterns("/**/api/v1/**/");
+                .addPathPatterns("/**/api/v1/**");
     }
 }
