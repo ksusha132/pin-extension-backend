@@ -41,8 +41,7 @@ public class FastSpringServiceImpl implements FastSpringService {
     BiConsumer<Person, SubscriptionCallbackCommon> updateSubscriptionInfo = this::updatePersonSubscription;
 
     @Override
-    public String subscriptionActivated(SubscriptionActivatedCallback callback) {
-        log.info("Request for subscription Activated {}", callback.getAccount().getId());
+    public String subscriptionActivated(SubscriptionCallbackCommon callback) {
         String idUser = getUserIdFromCallback(callback.getAccount());
         Optional<Person> oPerson = personRepository.findByFastSpringId(idUser);
         log.info("Subscription activated, user id is: {}, subscription id is: {}",
@@ -56,19 +55,19 @@ public class FastSpringServiceImpl implements FastSpringService {
     }
 
     @Override
-    public String subscriptionDeactivated(SubscriptionDeactivatedCallback callback) {
+    public String subscriptionDeactivated(SubscriptionCallbackCommon callback) {
         log.info("Request for subscription Deactivated {}", callback.getAccount().getId());
         return updatePersonInfo(callback, DEACTIVATED);
     }
 
     @Override
-    public String chargeFailed(SubscriptionChargeFailedCallback callback) {
+    public String chargeFailed(SubscriptionCallbackCommon callback) {
         log.info("Request for subscription ChargeFailed {}", callback.getAccount().getId());
         return updatePersonInfo(callback, CHARGE_FAILED);
     }
 
     @Override
-    public String chargeCompleted(SubscriptionChargeCompletedCallback callback) {
+    public String chargeCompleted(SubscriptionCallbackCommon callback) {
         log.info("Request for subscription chargeCompleted {}", callback);
         return updatePersonInfo(callback, CHARGE_COMPLETED);
     }

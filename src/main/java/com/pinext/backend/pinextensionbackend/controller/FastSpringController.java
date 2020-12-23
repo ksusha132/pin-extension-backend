@@ -1,10 +1,7 @@
 package com.pinext.backend.pinextensionbackend.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pinext.backend.pinextensionbackend.aop.FastSpringApiRequested;
 import com.pinext.backend.pinextensionbackend.callback.*;
 import com.pinext.backend.pinextensionbackend.service.FastSpringService;
-import io.micrometer.core.instrument.util.IOUtils;
 import io.swagger.annotations.Api;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @Slf4j
@@ -34,29 +30,34 @@ public class FastSpringController {
     // @FastSpringApiRequested
     @SneakyThrows
     @PostMapping(CALLBACK_SUBS_ACTIVATED)
-    public ResponseEntity<?> activateSubscription(HttpServletRequest request) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestStr = IOUtils.toString(request.getInputStream());
-        SubscriptionActivatedCallback callback = objectMapper.readValue(requestStr, SubscriptionActivatedCallback.class);
-        return ResponseEntity.ok(fastSpringService.subscriptionActivated(callback));
+    public ResponseEntity<?> activateSubscription(@RequestBody MainRequest request) {
+        return ResponseEntity.ok(fastSpringService.subscriptionActivated(getSubscriptionCallbackCommon(request)));
     }
 
     // @FastSpringApiRequested
     @PostMapping(CALLBACK_SUBS_DEACTIVATED)
-    public ResponseEntity<?> subscriptionDeactivated(@RequestBody SubscriptionDeactivatedCallback request) {
-        return ResponseEntity.ok(fastSpringService.subscriptionDeactivated(request));
+    public ResponseEntity<?> subscriptionDeactivated(@RequestBody MainRequest request) {
+        return ResponseEntity.ok(fastSpringService.subscriptionDeactivated(getSubscriptionCallbackCommon(request)));
     }
 
 
     //@FastSpringApiRequested
     @PostMapping(CALLBACK_SUBS_CHARGE_COMPLETED)
-    public ResponseEntity<?> chargeCompleted(@RequestBody SubscriptionChargeCompletedCallback request) {
-        return ResponseEntity.ok(fastSpringService.chargeCompleted(request));
+    public ResponseEntity<?> chargeCompleted(@RequestBody MainRequest request) {
+        return ResponseEntity.ok(fastSpringService.chargeCompleted(getSubscriptionCallbackCommon(request)));
     }
 
     //@FastSpringApiRequested
     @PostMapping(CALLBACK_SUBS_CHARGE_FAILED)
-    public ResponseEntity<?> subscriptionChargeFailed(@RequestBody SubscriptionChargeFailedCallback request) {
-        return ResponseEntity.ok(fastSpringService.chargeFailed(request));
+    public ResponseEntity<?> subscriptionChargeFailed(@RequestBody MainRequest request) {
+        return ResponseEntity.ok(fastSpringService.chargeFailed(getSubscriptionCallbackCommon(request)));
+    }
+
+    private SubscriptionCallbackCommon getSubscriptionCallbackCommon(@RequestBody MainRequest request) {
+        return request.getEvents()
+                .stream()
+                .findFirst()
+                .map(Event::getData)
+                .orElseThrow(() -> new RuntimeException("cannot get event"));
     }
 }
