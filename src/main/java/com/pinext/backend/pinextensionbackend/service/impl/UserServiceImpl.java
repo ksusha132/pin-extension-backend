@@ -1,15 +1,19 @@
-package com.pinext.backend.pinextensionbackend.service;
+package com.pinext.backend.pinextensionbackend.service.impl;
 
+import com.pinext.backend.pinextensionbackend.entity.Person;
 import com.pinext.backend.pinextensionbackend.exception.SubscriptionException;
 import com.pinext.backend.pinextensionbackend.repository.PersonRepository;
 import com.pinext.backend.pinextensionbackend.request.CheckUserSubscriptionRequest;
-import com.pinext.backend.pinextensionbackend.request.SubscriptionCallbackRequest;
+import com.pinext.backend.pinextensionbackend.request.CreateAccountRequest;
 import com.pinext.backend.pinextensionbackend.response.CheckSubscriptionResponse;
+import com.pinext.backend.pinextensionbackend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -41,7 +45,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean processCallback(SubscriptionCallbackRequest request) {
-        return null;
+    public UUID createUUidIfNotPresent(CreateAccountRequest request) {
+        //check
+        Person person = personRepository.findByEmail(request.getEmail());
+        if (Objects.nonNull(person)) {
+            log.info("Person found: {}", person);
+            return person.getId();
+        }
+        Person newOne = new Person();
+        newOne.setEmail(request.getEmail());
+        Person newSaved = personRepository.save(newOne);
+        return newSaved.getId();
     }
 }

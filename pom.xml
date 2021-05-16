@@ -15,7 +15,7 @@
 	<description>Backend for chrome extensions</description>
 
 	<properties>
-		<java.version>8</java.version>
+		<java.version>14</java.version>
 		<swagger-core-version>2.1.2</swagger-core-version>
 		<springfox-swagger2.version>2.9.2</springfox-swagger2.version>
 		<commons.lang.version>3.10</commons.lang.version>
@@ -28,6 +28,7 @@
 		<postgres.version>42.2.14</postgres.version>
 		<hibernate.version>5.2.9.Final</hibernate.version>
 		<springfox.swagger>2.9.2</springfox.swagger>
+		<spring.security.version>5.3.3.RELEASE</spring.security.version>
 	</properties>
 
 	<dependencies>
@@ -41,21 +42,10 @@
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-security</artifactId>-->
-<!--		</dependency>-->
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.security</groupId>-->
-<!--			<artifactId>spring-security-test</artifactId>-->
-<!--			<scope>test</scope>-->
-<!--		</dependency>-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -66,6 +56,12 @@
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20160810</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.paymentwall</groupId>
+			<artifactId>paymentwall-java</artifactId>
+			<version>2.0.3</version>
 		</dependency>
 
 		<dependency>
@@ -132,6 +128,19 @@
 			<artifactId>postgresql</artifactId>
 			<version>${postgres.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

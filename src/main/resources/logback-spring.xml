@@ -38,8 +38,7 @@
         <appender-ref ref="Console" />
     </root>
 
-    <!-- LOG "com.pinext*" at TRACE level -->
-    <logger name="com.pinext" level="trace" additivity="false">
+    <logger name="com.trader.app" level="trace" additivity="false">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </logger>
