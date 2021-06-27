@@ -132,7 +132,13 @@
 			<artifactId>postgresql</artifactId>
 			<version>${postgres.version}</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.paymentwall</groupId>
+            <artifactId>paymentwall-java</artifactId>
+            <version>2.0.3</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
