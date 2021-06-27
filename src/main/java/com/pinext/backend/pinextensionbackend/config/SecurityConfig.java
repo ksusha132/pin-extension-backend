@@ -12,8 +12,7 @@ import org.springframework.security.web.session.SessionManagementFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsFilter corsFilter() {
-        CorsFilter filter = new CorsFilter();
-        return filter;
+        return new CorsFilter();
     }
 
     @Override
