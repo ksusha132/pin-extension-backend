@@ -1,3 +1,11 @@
+logging:
+  level:
+    root: INFO
+    com:
+      pinext:
+        backend:
+          pinextensionbackend: TRACE
+
 server:
   port: 8085
   servlet:
@@ -22,6 +30,10 @@ spring:
     generate-ddl: true
   security:
     enabled: false
+
+payment-wall:
+  secret-key: aea088af75de6feb1da7358f976ec26c
+  project-key: 91ece235b9995f8f38eb8c2d1cb0b9a5
 
 application:
   swagger:
