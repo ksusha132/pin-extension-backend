@@ -114,9 +114,7 @@ public class FastSpringServiceImpl implements FastSpringService {
 
     private void createSubscription(SubscriptionCallbackCommon callback, Person newcomer) {
         Subscription subscription = new Subscription();
-        subscription.setSubscriptionId(callback.getSubscription());
         subscription.setPerson(newcomer);
-        subscription.setSubscriptionId(callback.getSubscription());
         subscription.setActive(callback.active);
         subscription.setState(callback.getState());
         subscription.setFrom(LocalDate.now());
@@ -142,7 +140,6 @@ public class FastSpringServiceImpl implements FastSpringService {
                 .orElse(LocalDate.now()));
         subs.setActive(callback.active);
         subs.setState(callback.getState());
-        subs.setSubscriptionId(callback.getSubscription());
         return subs;
     }
 

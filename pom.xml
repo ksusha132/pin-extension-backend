@@ -15,7 +15,7 @@
 	<description>Backend for chrome extensions</description>
 
 	<properties>
-		<java.version>8</java.version>
+		<java.version>14</java.version>
 		<swagger-core-version>2.1.2</swagger-core-version>
 		<springfox-swagger2.version>2.9.2</springfox-swagger2.version>
 		<commons.lang.version>3.10</commons.lang.version>
@@ -149,6 +149,14 @@
 					<executable>true</executable>
 				</configuration>
 			</plugin>
-		</plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
+                </configuration>
+            </plugin>
+        </plugins>
 	</build>
 </project>

@@ -8,4 +8,5 @@ import java.time.LocalDateTime;
 public class PaymentUrlResponse {
     private String url;
     private LocalDateTime dateTime;
+    private String email;
 }

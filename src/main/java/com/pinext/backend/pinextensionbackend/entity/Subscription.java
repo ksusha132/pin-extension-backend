@@ -55,12 +55,6 @@ public class Subscription {
     @Column(name = "sto")
     LocalDate to;
 
-    /**
-     * payment
-     */
-    @Column(name = "payment")
-    String payment;
-
     @ManyToOne
     @JoinColumn(name = "person", nullable = false)
     private Person person;
