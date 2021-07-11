@@ -22,8 +22,20 @@ public class Subscription {
     /**
      * type
      */
+    @Column(name = "subscription_id")
+    String subscriptionId;
+
+    /**
+     * type
+     */
     @Column(name = "type")
     String type;
+
+    /**
+     * state
+     */
+    @Column(name = "state")
+    String state;
 
     /**
      * active

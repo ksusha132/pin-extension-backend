@@ -15,7 +15,7 @@ spring:
   application:
     name: extDownloader
     profiles:
-      active: local
+      active: dev
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL94Dialect
     properties:
